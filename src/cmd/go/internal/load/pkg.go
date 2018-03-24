@@ -676,6 +676,14 @@ func disallowInternal(srcDir string, p *Package, stk *ImportStack) *Package {
 		return p
 	}
 
+	// PATCH
+	// Allow to import internal in dirty packages
+	for _, dir := range strings.Split(srcDir, "/") {
+		if dir == "dirty" {
+			return p
+		}
+	}
+
 	// The generated 'testmain' package is allowed to access testing/internal/...,
 	// as if it were generated into the testing directory tree
 	// (it's actually in a temporary directory outside any Go tree).
